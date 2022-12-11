@@ -66,4 +66,6 @@ select
 from
 	sakila.film
 where 
-	length >= 60 and length <= 90;
+	length >= 60 
+and 
+	length <= 90;
