@@ -8,7 +8,7 @@ select
   email as "Email" 
 from sakila.customer;
 
--- Ex 3 desc спадання
+-- Ex 3 desc
 select
   address as "Addres",
   district as "District",
