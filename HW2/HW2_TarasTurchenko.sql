@@ -55,9 +55,9 @@ select distinct
     a.first_name as 'First Name',
     a.last_name  as 'Last Name'
 from film_actor fa
-left join actor a on fa.actor_id = a.actor_id
-left join film_category fc on fa.film_id = fc.film_id
-left join category c on fc.category_id = c.category_id
+join actor a on fa.actor_id = a.actor_id
+join film_category fc on fa.film_id = fc.film_id
+join category c on fc.category_id = c.category_id
 where c.name in ('Music', 'Sports')
 order by a.actor_id;
 
@@ -115,9 +115,9 @@ where customer_id in (
 
 -- JOIN
 select distinct f.film_id as 'ID', f.title as 'Film' from rental as r
-left join inventory i on r.inventory_id = i.inventory_id
-left join film f on i.film_id = f.film_id
-left join staff s on r.staff_id = s.staff_id
+join inventory i on r.inventory_id = i.inventory_id
+join film f on i.film_id = f.film_id
+join staff s on r.staff_id = s.staff_id
 where s.first_name = 'Mike' and s.last_name = 'Hillyer'
 order by f.film_id;
 
@@ -146,9 +146,9 @@ select distinct
     c.first_name as 'First Name',
     c.last_name as 'Last Name'
 from rental as r
-left join inventory as i on r.inventory_id = i.inventory_id
-left join customer as c on r.customer_id = c.customer_id
-left join film as f on i.film_id = f.film_id
+join inventory as i on r.inventory_id = i.inventory_id
+join customer as c on r.customer_id = c.customer_id
+join film as f on i.film_id = f.film_id
 where f.title in ('SWEETHEARTS SUSPECTS', 'TEEN APOLLO', 'TIMBERLAND SKY', 'TORQUE BOUND')
 order by c.customer_id;
 
@@ -177,8 +177,8 @@ order by c.customer_id;
 
 -- JOIN
 select distinct f.film_id as 'ID', f.title as 'Film' from rental as r
-left join inventory as i on r.inventory_id = i.inventory_id
-left join film as f on i.film_id = f.film_id
+join inventory as i on r.inventory_id = i.inventory_id
+join film as f on i.film_id = f.film_id
 where f.replacement_cost > 10 and r.return_date is null
 order by f.film_id;
 
@@ -207,7 +207,7 @@ select distinct
     p.amount as 'Amount',
     p.payment_date as 'Payment Date'
 from payment as p
-left join customer c on c.customer_id = p.customer_id
+join customer c on c.customer_id = p.customer_id
 where p.amount > 10
 order by p.payment_date;
 
