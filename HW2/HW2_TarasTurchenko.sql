@@ -39,3 +39,38 @@ where c.country_id in (
     where c2.country in ('Argentina', 'Austria')
 )
 order by c.city;
+
+
+
+-- Task 3
+-- Вивести список акторів, що знімалися в фільмах категорій Music, Sports.
+-- (використати таблиці actor, film_actor, film_category, category).
+
+-- JOIN
+select distinct
+    a.actor_id   as 'ID',
+    a.first_name as 'First Name',
+    a.last_name  as 'Last Name'
+from film_actor fa
+left join actor a on fa.actor_id = a.actor_id
+left join film_category fc on fa.film_id = fc.film_id
+left join category c on fc.category_id = c.category_id
+where c.name in ('Music', 'Sports')
+order by a.actor_id;
+
+-- SUB-QUERY
+select
+    a.actor_id   as 'ID',
+    a.first_name as 'First Name',
+    a.last_name  as 'Last Name'
+from actor a
+where a.actor_id in (
+    select fa.actor_id from film_actor as fa
+    where fa.film_id in (
+        select fc.film_id from film_category as fc
+        where fc.category_id in (
+            select c.category_id from category as c
+            where c.name in ('Music', 'Sports')
+        )
+    )
+);
