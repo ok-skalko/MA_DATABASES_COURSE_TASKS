@@ -32,5 +32,16 @@ join sakila.category as category on category.category_id = film_category.categor
 where category.name in ('Sports', 'Music');
 
 -- Ex 4.1
+select
+  first_name as 'Name',
+  last_name as 'Surname'
+from sakila.customer
+where customer_id in (
+	select customer_id from sakila.rental as rental
+	where return_date is null
+)
 
-
+-- Ex 4.2
+select distinct first_name, last_name from sakila.customer as customer
+join sakila.rental as rental on customer.customer_id = rental.customer_id
+where rental.return_date is null;
