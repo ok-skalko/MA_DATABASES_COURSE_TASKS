@@ -74,3 +74,30 @@ where a.actor_id in (
         )
     )
 );
+
+
+
+-- Task 4
+-- Вивести прізвища та імена всіх клієнтів (customer),
+-- які не повернули фільми в прокат.
+
+-- JOIN
+select distinct
+    c.customer_id as 'ID',
+    c.last_name as 'Last Name',
+    c.first_name as 'First Name'
+from customer as c
+join rental r on c.customer_id = r.customer_id
+where r.return_date is null
+order by c.customer_id;
+
+-- SUB-QUERY
+select
+    c.customer_id as 'ID',
+    c.last_name as 'Last Name',
+    c.first_name as 'First Name'
+from customer as c
+where customer_id in (
+    select r.customer_id from rental as r
+    where r.return_date is null
+);
