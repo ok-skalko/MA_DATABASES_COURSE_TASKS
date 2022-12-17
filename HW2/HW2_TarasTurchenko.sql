@@ -16,7 +16,10 @@ order by a.address_id;
 select
     a.address_id as 'ID',
     a.address as 'Address',
-    (select c.city from city c where c.city_id = a.city_id) as 'City'
+    (
+        select c.city from city c
+        where c.city_id = a.city_id
+    ) as 'City'
 from address a
 where a.phone = '' or a.postal_code = '';
 
@@ -188,3 +191,38 @@ where f.replacement_cost > 10 and f.film_id in (
         where r.return_date is null
     )
 );
+
+
+
+-- Task 8
+-- Вивести прізвище та ім'я користувачів (customer),
+-- які здійснювали оплату в розмірі більшому,
+-- ніж 10 доларів (таблиця payment, поле amount), також вивести amount, дату оплати.
+-- Відсортувати за датою оплати.
+
+-- JOIN
+select distinct
+    c.first_name as 'First Name',
+    c.last_name as 'Last Name',
+    p.amount as 'Amount',
+    p.payment_date as 'Payment Date'
+from payment as p
+left join customer c on c.customer_id = p.customer_id
+where p.amount > 10
+order by p.payment_date;
+
+-- SUB-QUERY
+select
+    (
+        select c.first_name from customer as c
+        where c.customer_id = p.customer_id
+    ) as 'First Name',
+    (
+        select c.last_name from customer as c
+        where c.customer_id = p.customer_id
+    ) as 'Last Name',
+    p.amount as 'Amount',
+    p.payment_date as 'Payment Date'
+from payment as p
+where p.amount > 10
+order by p.payment_date;
