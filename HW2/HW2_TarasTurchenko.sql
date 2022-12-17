@@ -166,3 +166,25 @@ where c.customer_id in (
     )
 )
 order by c.customer_id;
+
+
+
+-- Task 7
+-- Вивести список фільмів, незданих в прокат, replacement_cost яких більший 10 доларів.
+
+-- JOIN
+select distinct f.film_id as 'ID', f.title as 'Film' from rental as r
+left join inventory as i on r.inventory_id = i.inventory_id
+left join film as f on i.film_id = f.film_id
+where f.replacement_cost > 10 and r.return_date is null
+order by f.film_id;
+
+-- SUB-QUERY
+select f.film_id as 'ID', f.title as 'Film' from film as f
+where f.replacement_cost > 10 and f.film_id in (
+    select i.film_id from inventory as i
+    where i.inventory_id in (
+        select r.inventory_id from rental as r
+        where r.return_date is null
+    )
+);
