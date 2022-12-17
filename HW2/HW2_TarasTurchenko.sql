@@ -130,3 +130,39 @@ where f.film_id in (
         )
     )
 );
+
+
+
+-- Task 6
+-- Вивести користувачів, що брали в оренду фільми SWEETHEARTS SUSPECTS,
+-- TEEN APOLLO, TIMBERLAND SKY, TORQUE BOUND.
+
+-- JOIN
+select distinct
+    c.customer_id as 'ID',
+    c.first_name as 'First Name',
+    c.last_name as 'Last Name'
+from rental as r
+left join inventory as i on r.inventory_id = i.inventory_id
+left join customer as c on r.customer_id = c.customer_id
+left join film as f on i.film_id = f.film_id
+where f.title in ('SWEETHEARTS SUSPECTS', 'TEEN APOLLO', 'TIMBERLAND SKY', 'TORQUE BOUND')
+order by c.customer_id;
+
+-- SUB-QUERY
+select
+    c.customer_id as 'ID',
+    c.first_name as 'First Name',
+    c.last_name as 'Last Name'
+from customer as c
+where c.customer_id in (
+    select r.customer_id from rental as r
+    where r.inventory_id in (
+        select i.inventory_id from inventory as i
+        where i.film_id in (
+            select f.film_id from film as f
+            where f.title in ('SWEETHEARTS SUSPECTS', 'TEEN APOLLO', 'TIMBERLAND SKY', 'TORQUE BOUND')
+        )
+    )
+)
+order by c.customer_id;
