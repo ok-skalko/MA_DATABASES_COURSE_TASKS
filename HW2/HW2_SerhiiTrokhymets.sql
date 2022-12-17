@@ -33,15 +33,39 @@ where category.name in ('Sports', 'Music');
 
 -- Ex 4.1
 select
-  first_name as 'Name',
-  last_name as 'Surname'
+	first_name as 'Name',
+	last_name as 'Surname'
 from sakila.customer
 where customer_id in (
 	select customer_id from sakila.rental as rental
 	where return_date is null
-)
+);
 
 -- Ex 4.2
 select distinct first_name, last_name from sakila.customer as customer
 join sakila.rental as rental on customer.customer_id = rental.customer_id
 where rental.return_date is null;
+
+-- Ex 5.1
+select
+	title,
+    film_id
+from sakila.film
+where film_id in (
+	select distinct film_id from sakila.inventory
+	where inventory_id in (
+		select inventory_id from sakila.rental
+		where staff_id = (
+			select staff_id from sakila.staff
+			where first_name = 'Mike' or last_name = 'Hillyer'
+		)
+	)
+);
+
+-- Ex 5.2
+select distinct film.title, film.film_id from sakila.film as film
+join sakila.inventory as inventory on inventory.film_id = film.film_id
+join sakila.rental as rental on rental.inventory_id = inventory.inventory_id
+join sakila.staff as staff on staff.staff_id = rental.staff_id
+where staff.first_name = 'Mike' or staff.last_name = 'Hillyer';
+
