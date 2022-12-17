@@ -51,9 +51,9 @@ order by c.city;
 
 -- JOIN
 select distinct
-    a.actor_id   as 'ID',
+    a.actor_id as 'ID',
     a.first_name as 'First Name',
-    a.last_name  as 'Last Name'
+    a.last_name as 'Last Name'
 from film_actor fa
 join actor a on fa.actor_id = a.actor_id
 join film_category fc on fa.film_id = fc.film_id
@@ -63,16 +63,16 @@ order by a.actor_id;
 
 -- SUB-QUERY
 select
-    a.actor_id   as 'ID',
+    a.actor_id as 'ID',
     a.first_name as 'First Name',
-    a.last_name  as 'Last Name'
+    a.last_name as 'Last Name'
 from actor a
 where a.actor_id in (
-    select fa.actor_id from film_actor as fa
+    select fa.actor_id from film_actor fa
     where fa.film_id in (
-        select fc.film_id from film_category as fc
+        select fc.film_id from film_category fc
         where fc.category_id in (
-            select c.category_id from category as c
+            select c.category_id from category c
             where c.name in ('Music', 'Sports')
         )
     )
@@ -89,7 +89,7 @@ select distinct
     c.customer_id as 'ID',
     c.last_name as 'Last Name',
     c.first_name as 'First Name'
-from customer as c
+from customer c
 join rental r on c.customer_id = r.customer_id
 where r.return_date is null
 order by c.customer_id;
@@ -99,9 +99,9 @@ select
     c.customer_id as 'ID',
     c.last_name as 'Last Name',
     c.first_name as 'First Name'
-from customer as c
+from customer c
 where customer_id in (
-    select r.customer_id from rental as r
+    select r.customer_id from rental r
     where r.return_date is null
 );
 
@@ -114,7 +114,7 @@ where customer_id in (
 -- і таблиці film (поле film_id).
 
 -- JOIN
-select distinct f.film_id as 'ID', f.title as 'Film' from rental as r
+select distinct f.film_id as 'ID', f.title as 'Film' from rental r
 join inventory i on r.inventory_id = i.inventory_id
 join film f on i.film_id = f.film_id
 join staff s on r.staff_id = s.staff_id
@@ -122,13 +122,13 @@ where s.first_name = 'Mike' and s.last_name = 'Hillyer'
 order by f.film_id;
 
 -- SUB-QUERY
-select f.film_id as 'ID', f.title as 'Film' from film as f
+select f.film_id as 'ID', f.title as 'Film' from film f
 where f.film_id in (
-    select i.film_id from inventory as i
+    select i.film_id from inventory i
     where i.inventory_id in (
-        select r.inventory_id from rental as r
+        select r.inventory_id from rental r
         where r.staff_id in (
-            select s.staff_id from staff as s
+            select s.staff_id from staff s
             where s.first_name = 'Mike' and s.last_name = 'Hillyer'
         )
     )
@@ -145,10 +145,10 @@ select distinct
     c.customer_id as 'ID',
     c.first_name as 'First Name',
     c.last_name as 'Last Name'
-from rental as r
-join inventory as i on r.inventory_id = i.inventory_id
-join customer as c on r.customer_id = c.customer_id
-join film as f on i.film_id = f.film_id
+from rental r
+join inventory i on r.inventory_id = i.inventory_id
+join customer c on r.customer_id = c.customer_id
+join film f on i.film_id = f.film_id
 where f.title in ('SWEETHEARTS SUSPECTS', 'TEEN APOLLO', 'TIMBERLAND SKY', 'TORQUE BOUND')
 order by c.customer_id;
 
@@ -157,13 +157,13 @@ select
     c.customer_id as 'ID',
     c.first_name as 'First Name',
     c.last_name as 'Last Name'
-from customer as c
+from customer c
 where c.customer_id in (
-    select r.customer_id from rental as r
+    select r.customer_id from rental r
     where r.inventory_id in (
-        select i.inventory_id from inventory as i
+        select i.inventory_id from inventory i
         where i.film_id in (
-            select f.film_id from film as f
+            select f.film_id from film f
             where f.title in ('SWEETHEARTS SUSPECTS', 'TEEN APOLLO', 'TIMBERLAND SKY', 'TORQUE BOUND')
         )
     )
@@ -176,18 +176,18 @@ order by c.customer_id;
 -- Вивести список фільмів, незданих в прокат, replacement_cost яких більший 10 доларів.
 
 -- JOIN
-select distinct f.film_id as 'ID', f.title as 'Film' from rental as r
-join inventory as i on r.inventory_id = i.inventory_id
-join film as f on i.film_id = f.film_id
+select distinct f.film_id as 'ID', f.title as 'Film' from rental r
+join inventory i on r.inventory_id = i.inventory_id
+join film f on i.film_id = f.film_id
 where f.replacement_cost > 10 and r.return_date is null
 order by f.film_id;
 
 -- SUB-QUERY
-select f.film_id as 'ID', f.title as 'Film' from film as f
+select f.film_id as 'ID', f.title as 'Film' from film f
 where f.replacement_cost > 10 and f.film_id in (
-    select i.film_id from inventory as i
+    select i.film_id from inventory i
     where i.inventory_id in (
-        select r.inventory_id from rental as r
+        select r.inventory_id from rental r
         where r.return_date is null
     )
 );
@@ -206,7 +206,7 @@ select distinct
     c.last_name as 'Last Name',
     p.amount as 'Amount',
     p.payment_date as 'Payment Date'
-from payment as p
+from payment p
 join customer c on c.customer_id = p.customer_id
 where p.amount > 10
 order by p.payment_date;
@@ -214,15 +214,15 @@ order by p.payment_date;
 -- SUB-QUERY
 select
     (
-        select c.first_name from customer as c
+        select c.first_name from customer c
         where c.customer_id = p.customer_id
     ) as 'First Name',
     (
-        select c.last_name from customer as c
+        select c.last_name from customer c
         where c.customer_id = p.customer_id
     ) as 'Last Name',
     p.amount as 'Amount',
     p.payment_date as 'Payment Date'
-from payment as p
+from payment p
 where p.amount > 10
 order by p.payment_date;
