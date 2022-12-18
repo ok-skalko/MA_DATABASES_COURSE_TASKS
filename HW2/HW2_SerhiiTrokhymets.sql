@@ -137,4 +137,3 @@ from sakila.customer as customer
 join sakila.payment as payment on payment.customer_id = customer.customer_id
 where payment.amount > 10
 order by payment.payment_date;
-
