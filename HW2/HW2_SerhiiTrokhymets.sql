@@ -60,18 +60,18 @@ where rental.return_date is null;
 
 -- Ex 5.1
 select
-	title,
-    film_id
+  title,
+  film_id
 from sakila.film
 where film_id in (
-	select distinct film_id from sakila.inventory
-	where inventory_id in (
-		select inventory_id from sakila.rental
-		where staff_id = (
-			select staff_id from sakila.staff
-			where first_name = 'Mike' or last_name = 'Hillyer'
-		)
-	)
+  select distinct film_id from sakila.inventory
+  where inventory_id in (
+    select inventory_id from sakila.rental
+    where staff_id = (
+      select staff_id from sakila.staff
+      where first_name = 'Mike' or last_name = 'Hillyer'
+    )
+  )
 );
 
 -- Ex 5.2
@@ -111,7 +111,29 @@ where film_id in (
     )
 ) and replacement_cost > 10;
 
+-- Ex 7.2
 select title from sakila.film as film
 join sakila.inventory as inventory on inventory.film_id = film.film_id
 join sakila.rental as rental on rental.inventory_id = inventory.inventory_id
 where rental.return_date is null and film.replacement_cost > 10;
+
+-- Ex 8.1
+select
+  (select customer.first_name from customer as customer where customer.customer_id = payment.customer_id) as 'First name',
+  (select customer.last_name from customer as customer where customer.customer_id = payment.customer_id ) as 'Last name',
+  payment.payment_date,
+  payment.amount
+from sakila.payment as payment
+where payment.amount > 10
+order by payment.payment_date;  
+
+select distinct 
+  customer.first_name as 'First name',
+  customer.last_name as 'Last name', 
+  payment.payment_date,
+  payment.amount
+from sakila.customer as customer
+join sakila.payment as payment on payment.customer_id = customer.customer_id
+where payment.amount > 10
+order by payment.payment_date;
+
