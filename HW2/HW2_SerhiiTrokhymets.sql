@@ -1,3 +1,15 @@
+-- Ex 1.1
+select
+  address,
+  (select city from sakila.city where sakila.city.city_id = sakila.address.city_id)
+from sakila.address
+where sakila.address.phone = '' or sakila.address.postal_code = '';
+
+-- Ex 1.2
+select address, city from sakila.address as address
+join sakila.city as city on city.city_id = address.city_id
+where address.phone = '' or address.postal_code = '';
+
 -- Ex 2.1
 select city from sakila.city
 where country_id in (
@@ -68,4 +80,24 @@ join sakila.inventory as inventory on inventory.film_id = film.film_id
 join sakila.rental as rental on rental.inventory_id = inventory.inventory_id
 join sakila.staff as staff on staff.staff_id = rental.staff_id
 where staff.first_name = 'Mike' or staff.last_name = 'Hillyer';
+
+-- Ex 6.1
+select customer_id, first_name, last_name from customer
+where customer_id in (
+  select customer_id from rental
+  where inventory_id in (
+    select inventory_id from sakila.inventory
+    where film_id in (
+      select film_id from sakila.film
+      where title in ('SWEETHEARTS SUSPECTS', 'TEEN APOLLO', 'TIMBERLAND SKY', 'TORQUE BOUND')
+      )
+    )
+  );
+  
+--   Ex 6.2
+select customer.customer_id, first_name, last_name from sakila.customer as customer
+join sakila.rental as rental on rental.customer_id = customer.customer_id
+join sakila.inventory as inventory on inventory.inventory_id = rental.inventory_id
+join sakila.film as film on film.film_id = inventory.film_id
+where film.title in ('SWEETHEARTS SUSPECTS', 'TEEN APOLLO', 'TIMBERLAND SKY', 'TORQUE BOUND');
 
