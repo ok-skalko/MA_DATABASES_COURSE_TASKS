@@ -45,12 +45,12 @@ where category.name in ('Sports', 'Music');
 
 -- Ex 4.1
 select
-	first_name as 'Name',
-	last_name as 'Surname'
+  first_name as 'Name',
+  last_name as 'Surname'
 from sakila.customer
 where customer_id in (
-	select customer_id from sakila.rental as rental
-	where return_date is null
+  select customer_id from sakila.rental as rental
+  where return_date is null
 );
 
 -- Ex 4.2
@@ -127,6 +127,7 @@ from sakila.payment as payment
 where payment.amount > 10
 order by payment.payment_date;  
 
+-- Ex 8.2
 select distinct 
   customer.first_name as 'First name',
   customer.last_name as 'Last name', 
