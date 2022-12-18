@@ -101,3 +101,17 @@ join sakila.inventory as inventory on inventory.inventory_id = rental.inventory_
 join sakila.film as film on film.film_id = inventory.film_id
 where film.title in ('SWEETHEARTS SUSPECTS', 'TEEN APOLLO', 'TIMBERLAND SKY', 'TORQUE BOUND');
 
+-- Ex 7.1
+select title from sakila.film
+where film_id in (
+  select film_id from sakila.inventory
+  where inventory_id in (
+    select inventory_id from sakila.rental
+    where return_date is null
+    )
+) and replacement_cost > 10;
+
+select title from sakila.film as film
+join sakila.inventory as inventory on inventory.film_id = film.film_id
+join sakila.rental as rental on rental.inventory_id = inventory.inventory_id
+where rental.return_date is null and film.replacement_cost > 10;
