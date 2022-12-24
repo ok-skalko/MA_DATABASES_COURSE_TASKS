@@ -29,22 +29,43 @@ avg(length) as AVG_Lenght,
 max(length) as Max_Lenght
 from sakila.film;
 
+-- TASK  4;
+--Виведіть кількість міст для кожної країни.
+SELECT Country, count(city) as Cities_in_Country 
+from sakila.city
+join sakila.country using (country_id)
+group by country_id;
 
+-- TASK 5;
+--Виведіть кількість фільмів знятих в кожній категорії.
+SELECT name as Category, count(title) as Films  
+FROM sakila.film
+join sakila.film_category using(film_id)
+join sakila.category using(category_id)
+group by category_id;
 
+-- TASK 6;
+--Виведіть кількість акторів що знімалися в кожному фільмі.
+SELECT f.title as Film ,
+count(actor_id) as Actors 
+FROM sakila.film_actor
+join sakila.film as f using(film_id)
+group by film_id;
 
+-- TASK  7;
+--Виведіть кількість акторів що знімалися в кожній категорії фільмів.
+SELECT name as Category, count(actor_id) as Actors  
+FROM sakila.film
+join sakila.film_category using(film_id)
+join sakila.category using(category_id)
+join sakila.film_actor using(film_id)
+group by category_id;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+-- TASK  8;
+--Виведіть district та кількість адрес для кожного district, 
+--за умови, що district починається на “Central”.
+SELECT District, count(address) as Address 
+FROM sakila.address
+where district like "Central%"
+group by district
+order by district;
