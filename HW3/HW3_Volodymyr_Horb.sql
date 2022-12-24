@@ -69,3 +69,49 @@ FROM sakila.address
 where district like "Central%"
 group by district
 order by district;
+
+-- TASK  9;
+/* Виведіть кількість активних та неактивних клієнтів для кожного магазину.
+(формат: store_id, active, кількість клієнтів). */
+SELECT Store_id, 
+Active,
+count(customer_id) as Customers 
+FROM sakila.customer
+join sakila.store using(store_id)
+group by store_id,active
+
+-- TASK  10;
+/* Виведіть ім’я та прізвище клієнта, дату його першого та останнього платежу
+та загальну кількість грошей які він заплатив. */
+SELECT sc.first_name as First_Name,
+sc.last_name as Last_Name, 
+sum(sp.amount) as Incom_sum,
+min(sp.payment_date) as First_Payment_Date,
+max(sp.payment_date) as Last_Payment_Date
+FROM sakila.payment as sp
+join sakila.customer as sc using (customer_id)
+group by customer_id
+order by Incom_sum desc;
+
+-- TASK  11;
+/* Завдання з зірочкою :) Виведіть назву фільму та загальну кількість грошей
+отриманих від здачі цього фільму в прокат 
+(таблиці payment, rental, inventory,film) */
+select 
+distinct sf.title as Film, 
+sum(sp.amount) as Income_sum  
+from sakila.film as sf
+join sakila.inventory as si on si.film_id = sf.film_id
+join sakila.rental as sr on sr.inventory_id = si.inventory_id
+join sakila.payment as sp on sp.rental_id =sr.rental_id
+group by Film
+order by Income_sum desc;
+
+-- TASK  12;
+/* Завдання з зірочкою :) Виведіть всю інформацію про фільми, тривалість яких
+найбільша (в даному випадку потрібно використати підзапит з агрегаційною
+функцією */
+SELECT * FROM sakila.film
+where length = (
+	select max(length) FROM sakila.film
+);
