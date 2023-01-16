@@ -16,13 +16,13 @@ sakila.film
 pk_film_id
 fk_film_language
 fk_film_laguage_original
-
+one to many
 
 sakila.film_category
 pk_film_id, pk_category_id
 fk_film_category_category
 fk_film_category_film
-
+one to many
 -- TASK  2
 
 https://drive.google.com/file/d/1dWBmXG5i_g33kpscppAi5ETeb715DRFS/view?pli=1
