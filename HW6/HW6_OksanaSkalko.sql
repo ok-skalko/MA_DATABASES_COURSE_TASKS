@@ -41,7 +41,7 @@ create table orders (
 );
 
 create table articles (
-    articles_id int NOT NULL AUTO_INCREMENT,
+    article_id int NOT NULL AUTO_INCREMENT,
     name varchar (255),
     material_id int,
     color_id int,
